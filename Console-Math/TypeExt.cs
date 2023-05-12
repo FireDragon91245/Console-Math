@@ -38,9 +38,6 @@ namespace Console_Math
 
         public static bool IsCallableWithGeneric(this MethodInfo info, Type[] genericArgs, Type[] argTypes)
         {
-            if(!info.IsCallableWith(argTypes))
-                return false;
-
             var genericTypes = info.GetGenericMethodDefinition().GetGenericArguments();
             if(genericTypes.Length != genericArgs.Length)
                 return false;
@@ -51,7 +48,7 @@ namespace Console_Math
                     return false;
             }
 
-            return true;
+            return info.MakeGenericMethod(genericArgs).IsCallableWith(argTypes);
         }
 
         public static bool MeetsGenericConstraints(this Type genericConstraint, Type genericType)
@@ -186,6 +183,18 @@ namespace Console_Math
                     return true;
 
             return false;
+        }
+
+        public static TValue GetOrCreate<TKey, TValue> (this IDictionary<TKey, TValue> dict, TKey key)
+            where TValue : new()
+        {
+            if (!dict.TryGetValue(key, out TValue val))
+            {
+                val = new TValue();
+                dict.Add(key, val);
+            }
+
+            return val;
         }
     }
 }

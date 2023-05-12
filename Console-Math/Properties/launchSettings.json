@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Console-Math": {
+      "commandName": "Project",
+      "commandLineArgs": "Func('function One() return 1 end', 'One') + One()"
+    }
+  }
+}
